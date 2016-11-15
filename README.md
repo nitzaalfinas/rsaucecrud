@@ -1,5 +1,5 @@
 # Rsaucecrud
-This gem will help you to create a CRUD.
+This gem will help you to create an advanced CRUD.
 
 ## Usage
 Once you install this application, you can try to create a form;
