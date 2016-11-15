@@ -3,7 +3,7 @@ This gem will help you to create a CRUD.
 
 ## Usage
 Once you install this application, you can try to create a form;
-```ruby
+```bash
 $ rails console
 > create_form(:anu)
 ```
