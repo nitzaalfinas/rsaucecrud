@@ -1,8 +1,12 @@
 # Rsaucecrud
-Short description and motivation.
+This gem will help you to create a CRUD.
 
 ## Usage
-How to use my plugin.
+Once you install this application, you can try to create a form;
+```ruby
+$ rails console
+> create_form(:anu)
+```
 
 ## Installation
 Add this line to your application's Gemfile:
