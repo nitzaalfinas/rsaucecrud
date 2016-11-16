@@ -1,3 +1,4 @@
+require 'rsaucecrud/ext_core'
 require 'rsaucecrud/ext_view'
 require 'rsaucecrud/ext_controller'
 require 'rsaucecrud/ext_helper'
