@@ -127,7 +127,8 @@ def create_controller_create(the_namespace, the_controller, the_model, the_field
     @tfs = ''
     the_fields.each do |tf|
         if tf.to_s != 'id' && tf.to_s != 'created_at' && tf.to_s != 'updated_at'
-            @tfs = @tfs + ', ' + tf.to_s + ': params[:' + the_model.downcase + '][:' + tf.to_s + ']'
+            @tfs = @tfs + ', ' + tf.to_s + ': params[:' + the_model.downcase + '][:' + tf.to_s + ']
+            '
         end
     end
 
@@ -163,8 +164,10 @@ def create_controller_update(the_namespace, the_controller, the_model, the_field
 
     @tfs = ''
     the_fields.each do |tf|
-        @tfs = @tfs + '@' + the_model.downcase + '.' + tf.to_s + ' = params[:' + the_model.downcase + '][:' + tf.to_s + ']
-        '
+        if tf.to_s != 'id' && tf.to_s != 'created_at' && tf.to_s != 'updated_at'
+            @tfs = @tfs + '@' + the_model.downcase + '.' + tf.to_s + ' = params[:' + the_model.downcase + '][:' + tf.to_s + ']
+            '
+        end
     end
 
 "

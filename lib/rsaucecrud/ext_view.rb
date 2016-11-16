@@ -203,12 +203,14 @@ def create_html_formnew(the_namespace, the_controller, the_model, the_fields)
         f.write '    <%= form_for @' + the_model.downcase + ', url: {controller: "/' + the_namespace.downcase + '/' + the_controller.downcase + '", action: "create"} do |f| %>' + "\n"
 
         the_fields.each do |col|
-            f.write '        <div class="form-group">' + "\n"
-            f.write '            <label class="col-md-8">' + col.to_s + '</label>' + "\n"
-            f.write '            <div class="col-md-16">' + "\n"
-            f.write '                <%= f.text_field :' + col.to_s + ', {class: "form-control"} %>' + "\n"
-            f.write '            </div>' + "\n"
-            f.write '        </div>' + "\n"
+            if col.to_s != 'id' && col.to_s != 'created_at' && col.to_s != 'updated_at'
+                f.write '        <div class="form-group">' + "\n"
+                f.write '            <label class="col-md-8">' + col.to_s + '</label>' + "\n"
+                f.write '            <div class="col-md-16">' + "\n"
+                f.write '                <%= f.text_field :' + col.to_s + ', {class: "form-control"} %>' + "\n"
+                f.write '            </div>' + "\n"
+                f.write '        </div>' + "\n"
+            end
         end
 
         f.write '        <div class="form-group">' + "\n"
@@ -263,12 +265,14 @@ def create_html_formedit(the_namespace, the_controller, the_model, the_fields)
         f.write '    <%= form_for @' + the_model.downcase + ', url: {controller: "/' + the_namespace.downcase + '/' + the_controller.downcase + '", action: "update", id: @' + the_model.downcase + '.id} do |f| %>' + "\n"
 
         the_fields.each do |col|
-            f.write '        <div class="form-group">' + "\n"
-            f.write '            <label class="col-md-8">' + col.to_s + '</label>' + "\n"
-            f.write '            <div class="col-md-16">' + "\n"
-            f.write '                <%= f.text_field :' + col.to_s + ', {class: "form-control"} %>' + "\n"
-            f.write '            </div>' + "\n"
-            f.write '        </div>' + "\n"
+            if col.to_s != 'id' && col.to_s != 'created_at' && col.to_s != 'updated_at'
+                f.write '        <div class="form-group">' + "\n"
+                f.write '            <label class="col-md-8">' + col.to_s + '</label>' + "\n"
+                f.write '            <div class="col-md-16">' + "\n"
+                f.write '                <%= f.text_field :' + col.to_s + ', {class: "form-control"} %>' + "\n"
+                f.write '            </div>' + "\n"
+                f.write '        </div>' + "\n"
+            end
         end
 
         f.write '        <div class="form-group">' + "\n"
