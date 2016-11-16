@@ -60,7 +60,7 @@ def create_html_index(the_namespace, the_controller, the_model, the_fields)
             <td>
                 <div class="btn-group">
                     <div class="btn-group">
-                        <%#= link_to \'<i class="fa fa-pencil"></i>\'.html_safe, {controller: \'/provider/pdoms\', action: \'edit\', pdom_id: data.id, page: @page, rows: @rows, sort: @sort, order: @order, filter_rules: @filter_rules}, {class: \'btn btn-default btn-sm\', title: \'Edit\'} %>
+                        <%= link_to \'<i class="fa fa-pencil"></i>\'.html_safe, {controller: \'/' + the_namespace.downcase + '/' + the_controller.downcase + '\', action: \'edit\', id: data.id, page: @page, rows: @rows, sort: @sort, order: @order, filter_rules: @filter_rules}, {class: \'btn btn-default btn-sm\', title: \'Edit\'} %>
                     </div>
                 </div>
             </td>
@@ -200,7 +200,7 @@ def create_html_formnew(the_namespace, the_controller, the_model, the_fields)
     File.open(dir_name + '/' + @the_file_name, 'w') { |f|
 
         f.write '<div class="form-horizontal">' + "\n"
-        f.write '    <%= form_for @' + the_model.downcase + ', {controller: "/' + the_namespace.downcase + '/' + the_controller.downcase + '", action: "create"} do |f| %>' + "\n"
+        f.write '    <%= form_for @' + the_model.downcase + ', url: {controller: "/' + the_namespace.downcase + '/' + the_controller.downcase + '", action: "create"} do |f| %>' + "\n"
 
         the_fields.each do |col|
             f.write '        <div class="form-group">' + "\n"
@@ -260,7 +260,7 @@ def create_html_formedit(the_namespace, the_controller, the_model, the_fields)
     File.open(dir_name + '/' + @the_file_name, 'w') { |f|
 
         f.write '<div class="form-horizontal">' + "\n"
-        f.write '    <%= form_for @' + the_model.downcase + ', {controller: "/' + the_namespace.downcase + '/' + the_controller.downcase + '", action: "update", id: @' + the_model.downcase + '.id} do |f| %>' + "\n"
+        f.write '    <%= form_for @' + the_model.downcase + ', url: {controller: "/' + the_namespace.downcase + '/' + the_controller.downcase + '", action: "update", id: @' + the_model.downcase + '.id} do |f| %>' + "\n"
 
         the_fields.each do |col|
             f.write '        <div class="form-group">' + "\n"

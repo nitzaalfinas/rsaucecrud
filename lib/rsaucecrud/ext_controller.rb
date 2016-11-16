@@ -81,7 +81,7 @@ def create_controller_index(the_namespace, the_controller, the_model, the_fields
             if njes['op'] == 'equal'
                 @keluaran = @keluaran+' '+njes['field']+' = \\''+njes['value']+'\\' and '
             elsif njes['op'] == 'not equal'
-                @keluaran = @keluaran+' '+njes['field']+' <> \\''+njes['value']+'\' and '
+                @keluaran = @keluaran+' '+njes['field']+' <> \\''+njes['value']+'\\' and '
             elsif njes['op'] == 'contains'
                 @keluaran = @keluaran+' '+njes['field']+' like \\'%'+njes['value']+'%\\' and '
             elsif njes['op'] == 'l_contains'
