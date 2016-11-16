@@ -5,7 +5,12 @@ This gem will help you to create an advanced CRUD.
 Once you install this application, you can try to create a form;
 ```bash
 $ rails console
-> create_form(:anu)
+> rsaucecrud('Namespace', 'Controller', 'Model', [:field_a, :field_b, :field_c])
+```
+Example;
+```bash
+$ rails console
+> rsaucecrud('Patient', 'Symptoms', 'Symptom', Symptom.colum_names)
 ```
 
 ## Installation
