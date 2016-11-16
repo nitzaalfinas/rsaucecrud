@@ -1,0 +1,172 @@
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+            </th>
+            <th>
+                <%= show_th('satu', 'satu', @urlfor, @rows, @sort, @order, @filter_rules).html_safe %>
+            </th>
+            <th>
+                <%= show_th('dua', 'dua', @urlfor, @rows, @sort, @order, @filter_rules).html_safe %>
+            </th>
+            <th>
+                <%= show_th('tiga', 'tiga', @urlfor, @rows, @sort, @order, @filter_rules).html_safe %>
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+            </td>
+            <td class="td_filter">
+                <%= show_td_filter('satu', ['equal', 'not equal', 'contains', 'l_contains', 'less', 'greater']).html_safe %>
+            </td>
+            <td class="td_filter">
+                <%= show_td_filter('dua', ['equal', 'not equal', 'contains', 'l_contains', 'less', 'greater']).html_safe %>
+            </td>
+            <td class="td_filter">
+                <%= show_td_filter('tiga', ['equal', 'not equal', 'contains', 'l_contains', 'less', 'greater']).html_safe %>
+            </td>
+
+        </tr>
+        <% @datas.each do |data| %>
+        <tr>
+            <td>
+                <div class="btn-group">
+                    <div class="btn-group">
+                        <%= link_to '<i class="fa fa-pencil"></i>'.html_safe, {controller: '/provider/pinters', action: 'edit', id: data.id, page: @page, rows: @rows, sort: @sort, order: @order, filter_rules: @filter_rules}, {class: 'btn btn-default btn-sm', title: 'Edit'} %>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <%= data.satu %>
+            </td>
+            <td>
+                <%= data.dua %>
+            </td>
+            <td>
+                <%= data.tiga %>
+            </td>
+
+        </tr>
+        <% end %>
+    </tbody>
+</table>
+
+<div class="col-md-24 pl0 pr0">
+    <div class="btn-toolbar">
+
+        <div class="btn-group">
+            <!-- if (page - 1) = 0, don't show this -->
+            <% if ((@page.to_i - 1) != 0) %>
+            <a href="<%= @urlfor %>?page=<%= @page.to_i - 1 %>&rows=<%= @rows %>&sort=<%= @sort %>&order=<%= @order %>&filter_rules=<%= @filter_rules %>" class="btn btn-default">
+                <span>&laquo;</span>
+            </a>
+            <% end %>
+
+            <!-- don't show this if it just one page -->
+            <% if @total_page.to_i > 1 %>
+            <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+               Halaman <%= @page %> <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <% @ai = 1 %>
+                <% while @ai <= @total_page do %>
+                <li>
+                    <a href="<%= @urlfor %>?page=<%= @ai %>&rows=<%= @rows %>&sort=<%= @sort %>&order=<%= @order %>&filter_rules=<%= @filter_rules %>">
+                        <%= @ai %>
+                    </a>
+                </li>
+                <% @ai += 1 %>
+                <% end %>
+            </ul>
+            <% end %>
+
+            <% if ((@page.to_i + 1) < (@total_page + 1)) %>
+            <a href="<%= @urlfor %>?page=<%= @page.to_i + 1 %>&rows=<%= @rows %>&sort=<%= @sort %>&order=<%= @order %>&filter_rules=<%= @filter_rules %>" class="btn btn-default">
+                <span>&raquo;</span>
+            </a>
+            <% end %>
+        </div>
+
+        <div class="btn-group">
+            <button type="button" class="btn btn-default">Data Per-halaman: <%= @rows %></button>
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu">
+                <li>
+                    <a href="<%= @urlfor %>?page=1&rows=5&sort=<%= @sort %>&order=<%= @order %>&filter_rules=<%= @filter_rules %>">
+                        5
+                    </a>
+                </li>
+                <li>
+                    <a href="<%= @urlfor %>?page=1&rows=10&sort=<%= @sort %>&order=<%= @order %>&filter_rules=<%= @filter_rules %>">
+                        10
+                    </a>
+                </li>
+                <li>
+                    <a href="<%= @urlfor %>?page=1&rows=15&sort=<%= @sort %>&order=<%= @order %>&filter_rules=<%= @filter_rules %>">
+                        15
+                    </a>
+                </li>
+                <li>
+                    <a href="<%= @urlfor %>?page=1&rows=20&sort=<%= @sort %>&order=<%= @order %>&filter_rules=<%= @filter_rules %>">
+                        20
+                    </a>
+                </li>
+                <li>
+                    <a href="<%= @urlfor %>?page=1&rows=30&sort=<%= @sort %>&order=<%= @order %>&filter_rules=<%= @filter_rules %>">
+                        30
+                    </a>
+                </li>
+                <li>
+                    <a href="<%= @urlfor %>?page=1&rows=50&sort=<%= @sort %>&order=<%= @order %>&filter_rules=<%= @filter_rules %>">
+                        50
+                    </a>
+                </li>
+                <li>
+                    <a href="<%= @urlfor %>?page=1&rows=100&sort=<%= @sort %>&order=<%= @order %>&filter_rules=<%= @filter_rules %>">
+                        100
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    var filter_rules = <%= @filter_rules.html_safe %>;
+
+    $.each(filter_rules, function(i, nilai){
+        $('#td_filter_' + nilai.field + ' input').val(nilai.value);
+        $('#td_filter_' + nilai.field + ' .op_info').html(nilai.op);
+    });
+
+    function filterRulesChange(field_name, the_op) {
+
+        // sebelum dieksekusi, diganti dulu op_info
+        $('#td_filter_' + field_name + ' .op_info').html(the_op);
+
+        var ox_filter_rules = [];
+        // ambil semua parameter
+        $.each($('.td_filter'), function(a,b) {
+
+            console.log($(this).find('input').val());
+            var ox_field = $(this).find('.td_field_name').html();
+            var ox_value = $(this).find('input').val();
+            var ox_op = $(this).find('.op_info').html();
+
+            if(ox_value != '' && ox_op != []) {
+                ox_filter_rules.push({"field":ox_field,"op":ox_op,"value":ox_value});
+            }
+        });
+
+        window.location.href = '<%= @urlfor %>?page=1&rows=<%= @rows %>&sort=<%= @sort %>&order=<%= @order %>&filter_rules='+JSON.stringify(ox_filter_rules);
+    }
+</script>

@@ -126,7 +126,9 @@ def create_controller_create(the_namespace, the_controller, the_model, the_field
 
     @tfs = ''
     the_fields.each do |tf|
-        @tfs = @tfs + ', ' + tf.to_s + ': params[:' + the_model.downcase + '][:' + tf.to_s + ']'
+        if tf != 'id' || tf != 'created_at' || tf != 'updated_at'
+            @tfs = @tfs + ', ' + tf.to_s + ': params[:' + the_model.downcase + '][:' + tf.to_s + ']'
+        end
     end
 
 "
