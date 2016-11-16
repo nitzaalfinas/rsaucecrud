@@ -2,10 +2,8 @@ def create_controller_all(the_namespace, the_controller, the_model, the_fields)
 
     @the_file_name = the_controller.downcase + '_controller.rb'
 
-    dir_name = Rails.root.to_s + '/app/controller/' + the_namespace.downcase
+    dir_name = Rails.root.to_s + '/app/controllers/' + the_namespace.downcase
     FileUtils.mkdir_p dir_name
-
-    puts dir_name
 
     File.open(dir_name + '/' + @the_file_name, 'w') do |f|
 

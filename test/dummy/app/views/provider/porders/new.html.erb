@@ -1,0 +1,29 @@
+<div class="form-horizontal">
+    <%= form_for @porder, {controller: "/provider/porders", action: "create"} do |f| %>
+        <div class="form-group">
+            <label class="col-md-8">satu</label>
+            <div class="col-md-16">
+                <%= f.text_field :satu, {class: "form-control"} %>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-8">dua</label>
+            <div class="col-md-16">
+                <%= f.text_field :dua, {class: "form-control"} %>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-8">tiga</label>
+            <div class="col-md-16">
+                <%= f.text_field :tiga, {class: "form-control"} %>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-8">&nbsp;</label>
+            <div class="col-md-16">
+                <button class="btn btn-primary"><i class="fa fa-save"></i> Simpan</button>
+                <%= link_to '<i class="fa fa-undo"></i> Batal'.html_safe, {controller: "/provider/porders", action: "index"}, {class: 'btn btn-default'} %>
+            </div>
+        </div>
+    <% end %>
+</div>

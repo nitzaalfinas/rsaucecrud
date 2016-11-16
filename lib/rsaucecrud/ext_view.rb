@@ -1,63 +1,47 @@
-def app_root
-    Rails.root.to_s
-end
+def create_html_view(the_namespace, the_controller, the_model, the_fields)
 
-def create_html_form(form_obj, fields)
+    create_html_index(the_namespace, the_controller, the_model, the_fields)
 
-    File.open(Rails.root.to_s+'/public/form.html.erb', 'w') { |f|
+    create_html_formnew(the_namespace, the_controller, the_model, the_fields)
 
-        f.write '<div class="form-horizontal">' + "\n"
-        f.write '    <%= form_for ' + form_obj + ' do |f| %>' + "\n"
+    create_html_show(the_namespace, the_controller, the_model, the_fields)
 
-        fields.each do |col|
-            f.write '        <div class="form-group">' + "\n"
-            f.write '            <label class="col-md-8">' + col.to_s + '</label>' + "\n"
-            f.write '            <div class="col-md-16">' + "\n"
-            f.write '                <%= f.text_field :' + col.to_s + ', {class: "form-control"} %>' + "\n"
-            f.write '            </div>' + "\n"
-            f.write '        </div>' + "\n"
-        end
+    create_html_formedit(the_namespace, the_controller, the_model, the_fields)
 
-        f.write '        <div class="form-group">' + "\n"
-        f.write '            <label class="col-md-8">&nbsp;</label>' + "\n"
-        f.write '            <div class="col-md-16">' + "\n"
-        f.write '                <button class="btn btn-primary"><i class="fa fa-save"></i> Simpan</button>' + "\n"
-        f.write '                <%= link_to \'<i class="fa fa-undo"></i> Batal\'.html_safe, \'/\', {class: \'btn btn-default\'} %>' + "\n"
-        f.write '            </div>' + "\n"
-        f.write '        </div>' + "\n"
-        f.write '    <% end %>' + "\n"
-        f.write '</div>' + "\n"
+end #create_html_view
 
-    }
-end
+def create_html_index(the_namespace, the_controller, the_model, the_fields)
 
-def create_html_index(fields)
+    @the_file_name = 'index.html.erb'
+    dir_name = Rails.root.to_s + '/app/views/' + the_namespace.downcase + '/' + the_controller.downcase
+    FileUtils.mkdir_p dir_name
 
     @ths = ''
-    fields.each do |thx|
+    the_fields.each do |thx|
         @ths = @ths + '            <th>
                 <%= show_th(\'' + thx.to_s + '\', \'' + thx.to_s + '\', @urlfor, @rows, @sort, @order, @filter_rules).html_safe %>
             </th>' + "\n"
     end
 
     @tds = ''
-    fields.each do |tdx|
+    the_fields.each do |tdx|
         @tds = @tds + '            <td class="td_filter">
                 <%= show_td_filter(\'' + tdx.to_s + '\', [\'equal\', \'not equal\', \'contains\', \'l_contains\', \'less\', \'greater\']).html_safe %>
             </td>' + "\n"
     end
 
     @datas = ''
-    fields.each do |dat|
+    the_fields.each do |dat|
         @datas = @datas + '            <td>
                 <%= data.' + dat.to_s + ' %>
             </td>' + "\n"
     end
 
 
-    File.open(Rails.root.to_s+'/public/index.html.erb', 'w') do |f|
+    File.open(dir_name + '/' + @the_file_name, 'w') { |f|
 
-        f.write '<table class="table table-striped">
+        f.write '
+<table class="table table-striped">
     <thead>
         <tr>
             <th>
@@ -202,84 +186,100 @@ def create_html_index(fields)
     }
 </script>'
 
-    end
+    }
+
+end #create_html_index
 
 
-    def create_helper_rb()
-        File.open(Rails.root.to_s+'/public/helper_rb.rb', 'w') do |f|
+def create_html_formnew(the_namespace, the_controller, the_model, the_fields)
 
-        f.write 'module Provider::PdomsHelper
+    @the_file_name = 'new.html.erb'
+    dir_name = Rails.root.to_s + '/app/views/' + the_namespace.downcase + '/' + the_controller.downcase
+    FileUtils.mkdir_p dir_name
 
-    def show_th(name, field_name, urlfor, rows, sort, order, filter_rules)
+    File.open(dir_name + '/' + @the_file_name, 'w') { |f|
 
-        if sort == field_name && order == \'asc\'
-            @satu = \'<i class="fa fa-caret-up" style="color: #000"></i>\'
-        else
-            @satu = \'<i class="fa fa-caret-up"></i>\'
+        f.write '<div class="form-horizontal">' + "\n"
+        f.write '    <%= form_for @' + the_model.downcase + ', {controller: "/' + the_namespace.downcase + '/' + the_controller.downcase + '", action: "create"} do |f| %>' + "\n"
+
+        the_fields.each do |col|
+            f.write '        <div class="form-group">' + "\n"
+            f.write '            <label class="col-md-8">' + col.to_s + '</label>' + "\n"
+            f.write '            <div class="col-md-16">' + "\n"
+            f.write '                <%= f.text_field :' + col.to_s + ', {class: "form-control"} %>' + "\n"
+            f.write '            </div>' + "\n"
+            f.write '        </div>' + "\n"
         end
 
-        if sort == field_name && order == \'desc\'
-            @dua = \'<i class="fa fa-caret-down" style="color: #000"></i>\'
-        else
-            @dua = \'<i class="fa fa-caret-down"></i>\'
-        end
+        f.write '        <div class="form-group">' + "\n"
+        f.write '            <label class="col-md-8">&nbsp;</label>' + "\n"
+        f.write '            <div class="col-md-16">' + "\n"
+        f.write '                <button class="btn btn-primary"><i class="fa fa-save"></i> Simpan</button>' + "\n"
+        f.write '                <%= link_to \'<i class="fa fa-undo"></i> Batal\'.html_safe, {controller: "/' + the_namespace.downcase + '/' + the_controller.downcase + '", action: "index"}, {class: \'btn btn-default\'} %>' + "\n"
+        f.write '            </div>' + "\n"
+        f.write '        </div>' + "\n"
+        f.write '    <% end %>' + "\n"
+        f.write '</div>' + "\n"
 
-        \'<table class="my-table-head">
-            <tr>
-                <td>
-                    \' + name + \'
-                <td>
-                <td class="pl10">
-                    <table>
-                        <tr>
-                            <td>
-                                <a href="\' + urlfor + \'?page=1&rows=\' + rows.to_s + \'&sort=\' + field_name + \'&order=asc&filter_rules=\' + filter_rules + \'" style="color: #eaeaea;">
-                                    \' + @satu + \'
-                                </a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <a href="\' + urlfor + \'?page=1&rows=\' + rows.to_s + \'&sort=\' + field_name + \'&order=desc&filter_rules=\' + filter_rules + \'" style="color: #eaeaea;">
-                                    \' + @dua + \'
-                                </a>
-                            </td>
-                        </tr>
-                    </table>
-                <td>
-            </tr>
-        </table>\'
+    }
+end #create_html_formnew
+
+
+def create_html_show(the_namespace, the_controller, the_model, the_fields)
+
+    @the_file_name = 'show.html.erb'
+    dir_name = Rails.root.to_s + '/app/views/' + the_namespace.downcase + '/' + the_controller.downcase
+    FileUtils.mkdir_p dir_name
+
+    @tfs = ''
+    the_fields.each do |tf|
+        @tfs = @tfs + '<div class="col-md-24">
+    <div class="col-md-6">
+        ' + tf.to_s + '
+    </div>
+    <div class="col-md-18">
+        <%= @' + the_model.downcase + '.' + tf.to_s + ' %>
+    </div>
+</div>
+'
     end
 
-    def show_td_filter(field_name, ops)
+    File.open(dir_name + '/' + @the_file_name, 'w') { |f|
+        f.write @tfs
+    }
 
-        @op_string = \'\'
-        ops.each do |op|
-            @op_string = @op_string + \'<li><a href="javascript: filterRulesChange(\\\'\' + field_name + \'\\\', \\\'\' + op + \'\\\');">\' + op + \'</a></li>\'
+end #create_html_show
+
+
+def create_html_formedit(the_namespace, the_controller, the_model, the_fields)
+
+    @the_file_name = 'edit.html.erb'
+    dir_name = Rails.root.to_s + '/app/views/' + the_namespace.downcase + '/' + the_controller.downcase
+    FileUtils.mkdir_p dir_name
+
+    File.open(dir_name + '/' + @the_file_name, 'w') { |f|
+
+        f.write '<div class="form-horizontal">' + "\n"
+        f.write '    <%= form_for @' + the_model.downcase + ', {controller: "/' + the_namespace.downcase + '/' + the_controller.downcase + '", action: "update", id: @' + the_model.downcase + '.id} do |f| %>' + "\n"
+
+        the_fields.each do |col|
+            f.write '        <div class="form-group">' + "\n"
+            f.write '            <label class="col-md-8">' + col.to_s + '</label>' + "\n"
+            f.write '            <div class="col-md-16">' + "\n"
+            f.write '                <%= f.text_field :' + col.to_s + ', {class: "form-control"} %>' + "\n"
+            f.write '            </div>' + "\n"
+            f.write '        </div>' + "\n"
         end
 
-        \'<div id="td_filter_\' + field_name + \'" class="input-group">
-            <input type="text" class="form-control" />
-            <div class="hidden td_field_name">\' + field_name + \'</div>
-            <div class="input-group-btn">
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="op_info">[]</span>
-                    <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu dropdown-menu-right">
-                    \' + @op_string + \'
-                    <li>
-                        <a href="javascript: $(\\\'#td_filter_\' + field_name + \' input\\\').val(\\\'\\\'); filterRulesChange(\\\'\' + field_name + \'\\\', \\\'[]\\\');">[reset]</a>
-                    </li>
-                </ul>
-             </div>
-        </div>\'
-    end
-end'
-        end
-    end
+        f.write '        <div class="form-group">' + "\n"
+        f.write '            <label class="col-md-8">&nbsp;</label>' + "\n"
+        f.write '            <div class="col-md-16">' + "\n"
+        f.write '                <button class="btn btn-primary"><i class="fa fa-save"></i> Simpan</button>' + "\n"
+        f.write '                <%= link_to \'<i class="fa fa-undo"></i> Batal\'.html_safe, {controller: "/' + the_namespace.downcase + '/' + the_controller.downcase + '", action: "index"}, {class: \'btn btn-default\'} %>' + "\n"
+        f.write '            </div>' + "\n"
+        f.write '        </div>' + "\n"
+        f.write '    <% end %>' + "\n"
+        f.write '</div>' + "\n"
 
-
-
-
-end
+    }
+end #create_html_formedit
