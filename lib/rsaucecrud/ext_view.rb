@@ -289,30 +289,45 @@ def create_html_formnew(the_namespace, the_controller, the_model, the_fields)
 
     File.open(dir_name + '/' + @the_file_name, 'w') { |f|
 
-        f.write '<div class="form-horizontal">' + "\n"
-        f.write '    <%= form_for @' + the_model.downcase + ', url: {action: "create"} do |f| %>' + "\n"
+        f.write '<%= render partial: "head" %>' + "\n"
+
+        f.write '<div class="row">' + "\n"
+        f.write '    <div class="col-md-12">' + "\n"
+        f.write '        <div class="x_panel">' + "\n"
+        f.write '            <div class="x_title">' + "\n"
+        f.write '                <h2>New</h2>' + "\n"
+        f.write '            </div>' + "\n"
+        f.write '            <div class="x_content">' + "\n"
+
+        f.write '                <div class="form-horizontal">' + "\n"
+        f.write '                    <%= form_for @' + the_model.downcase + ', url: {action: "create"} do |f| %>' + "\n"
 
         the_fields.each do |col|
             if col.to_s != 'id' && col.to_s != 'created_at' && col.to_s != 'updated_at'
-                f.write '        <div class="form-group">' + "\n"
-                f.write '            <label class="col-md-4 control-label">' + col.to_s + '</label>' + "\n"
-                f.write '            <div class="col-md-8">' + "\n"
-                f.write '                <%= f.text_field :' + col.to_s + ', {class: "form-control"} %>' + "\n"
+                f.write '            <div class="form-group">' + "\n"
+                f.write '                <label class="col-md-4 control-label">' + col.to_s + '</label>' + "\n"
+                f.write '                <div class="col-md-8">' + "\n"
+                f.write '                    <%= f.text_field :' + col.to_s + ', {class: "form-control"} %>' + "\n"
+                f.write '                </div>' + "\n"
                 f.write '            </div>' + "\n"
-                f.write '        </div>' + "\n"
             end
         end
 
-        f.write '        <div class="form-group">' + "\n"
-        f.write '            <label class="col-md-4 control-label">&nbsp;</label>' + "\n"
-        f.write '            <div class="col-md-8">' + "\n"
-        f.write '                <button class="btn btn-primary"><i class="fa fa-save"></i> Simpan</button>' + "\n"
-        f.write '                <a href="<%= url_for({action: "index"}) %>" class="btn btn-default">' + "\n"
-        f.write '                    Batal' + "\n"
-        f.write '                </a>' + "\n"
+        f.write '                        <div class="form-group">' + "\n"
+        f.write '                            <label class="col-md-4 control-label">&nbsp;</label>' + "\n"
+        f.write '                            <div class="col-md-8">' + "\n"
+        f.write '                                <button class="btn btn-primary"><i class="fa fa-save"></i> Simpan</button>' + "\n"
+        f.write '                                <a href="<%= url_for({action: "index"}) %>" class="btn btn-default">' + "\n"
+        f.write '                                    Batal' + "\n"
+        f.write '                                </a>' + "\n"
+        f.write '                            </div>' + "\n"
+        f.write '                        </div>' + "\n"
+        f.write '                    <% end %>' + "\n"
+        f.write '                </div>' + "\n"
+
         f.write '            </div>' + "\n"
         f.write '        </div>' + "\n"
-        f.write '    <% end %>' + "\n"
+        f.write '    </div>' + "\n"
         f.write '</div>' + "\n"
 
     }
@@ -359,7 +374,7 @@ def create_html_formedit(the_namespace, the_controller, the_model, the_fields)
         f.write '    <div class="col-md-12">' + "\n"
         f.write '        <div class="x_panel">' + "\n"
         f.write '            <div class="x_title">' + "\n"
-        f.write '                <h2 class="col-md-6">Index</h2>' + "\n"
+        f.write '                <h2>Edit</h2>' + "\n"
         f.write '            </div>' + "\n"
         f.write '            <div class="x_content">' + "\n"
 
@@ -392,8 +407,6 @@ def create_html_formedit(the_namespace, the_controller, the_model, the_fields)
         f.write '        </div>' + "\n"
         f.write '    </div>' + "\n"
         f.write '</div>' + "\n"
-
-
 
     }
 end #create_html_formedit
