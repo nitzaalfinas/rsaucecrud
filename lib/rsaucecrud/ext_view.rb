@@ -53,11 +53,17 @@ def create_html_index(the_namespace, the_controller, the_model, the_fields)
             </tr>' + "\n"
     end
 
+    # Data
     @datas = ''
     the_fields.each do |dat|
-        @datas = @datas + '            <td>
+        @datas = @datas + '<tr>
+            <td>
+                ' + dat.to_s + '
+            </td>
+            <td>
                 <%= data.' + dat.to_s + ' %>
-            </td>' + "\n"
+            </td>
+            </tr>' + "\n"
     end
 
 
@@ -206,22 +212,15 @@ def create_html_index(the_namespace, the_controller, the_model, the_fields)
 
                             <div class="col-md-7 col-sm-5 col-xs-12" style="border:0px solid #e5e5e5;">
 
-                                <table>
+                                <table class="table table-striped">
+                                    ' + @datas + '
                                 </table>
-
-
 
                                 <div class="clearfix"></div>
 
                                 <div class="btn-toolbar">
                                     <a href="<%= url_for({ action: \'edit\', id: data.id, page: @page, rows: @rows, sort: @sort, order: @order, filter_rules: @filter_rules}) %>" class="btn btn-default btn-lg">
-                                        <i class="fa fa-pencil"></i> Package
-                                    </a>
-                                    <a href="<%= url_for({action: \'action_upload\', id: data.id, page: @page, rows: @rows, sort: @sort, order: @order, filter_rules: @filter_rules}) %>" class="btn btn-default btn-lg">
-                                        <i class="fa fa-pencil"></i> Image
-                                    </a>
-                                    <a href="<%= url_for({action: \'domestic_detail\', id: data.id, permalink: data.pdom_permalink}) %>" class="btn btn-default btn-lg">
-                                        <i class="fa fa-external-link"></i> Show
+                                        <i class="fa fa-pencil"></i> Edit
                                     </a>
                                 </div>
 
