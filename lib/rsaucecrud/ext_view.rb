@@ -23,7 +23,7 @@ def create_html_head
 </div>
 
 <div class="clearfix"></div>'
-    end
+    }
 end
 
 def create_html_index(the_namespace, the_controller, the_model, the_fields)
