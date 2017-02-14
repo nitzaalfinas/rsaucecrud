@@ -57,13 +57,13 @@ def create_html_index(the_namespace, the_controller, the_model, the_fields)
     @datas = ''
     the_fields.each do |dat|
         @datas = @datas + '<tr>
-            <td>
-                ' + dat.to_s + '
-            </td>
-            <td>
-                <%= data.' + dat.to_s + ' %>
-            </td>
-            </tr>' + "\n"
+                <td>
+                    ' + dat.to_s + '
+                </td>
+                <td>
+                        <%= data.' + dat.to_s + ' %>
+                </td>
+                        </tr>' + "\n"
     end
 
 
@@ -80,6 +80,10 @@ def create_html_index(the_namespace, the_controller, the_model, the_fields)
                         <div class="col-md-6 pl0 pr0">
                             <div class="btn-toolbar">
                                 <div class="pull-right">
+
+                                    <a href="<%= url_for({action: "New"}) %>" class="btn btn-default">
+                                        New
+                                    </a>
 
                                     <div class="btn btn-default" onclick="$(\'#search_field_wrap\').toggle();">
                                         <i class="fa fa-search"></i>
@@ -353,8 +357,8 @@ def create_html_formedit(the_namespace, the_controller, the_model, the_fields)
         the_fields.each do |col|
             if col.to_s != 'id' && col.to_s != 'created_at' && col.to_s != 'updated_at'
                 f.write '        <div class="form-group">' + "\n"
-                f.write '            <label class="col-md-8">' + col.to_s + '</label>' + "\n"
-                f.write '            <div class="col-md-16">' + "\n"
+                f.write '            <label class="col-md-4 control-label">' + col.to_s + '</label>' + "\n"
+                f.write '            <div class="col-md-8">' + "\n"
                 f.write '                <%= f.text_field :' + col.to_s + ', {class: "form-control"} %>' + "\n"
                 f.write '            </div>' + "\n"
                 f.write '        </div>' + "\n"
@@ -362,8 +366,8 @@ def create_html_formedit(the_namespace, the_controller, the_model, the_fields)
         end
 
         f.write '        <div class="form-group">' + "\n"
-        f.write '            <label class="col-md-8">&nbsp;</label>' + "\n"
-        f.write '            <div class="col-md-16">' + "\n"
+        f.write '            <label class="col-md-4 control-label">&nbsp;</label>' + "\n"
+        f.write '            <div class="col-md-8">' + "\n"
         f.write '                <button class="btn btn-primary"><i class="fa fa-save"></i> Simpan</button>' + "\n"
         f.write '                <%= link_to \'<i class="fa fa-undo"></i> Batal\'.html_safe, {controller: "/' + the_namespace.downcase + '/' + the_controller.downcase + '", action: "index"}, {class: \'btn btn-default\'} %>' + "\n"
         f.write '            </div>' + "\n"
