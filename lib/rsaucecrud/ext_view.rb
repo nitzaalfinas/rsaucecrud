@@ -10,6 +10,22 @@ def create_html_view(the_namespace, the_controller, the_model, the_fields)
 
 end #create_html_view
 
+def create_html_head
+    @the_file_name = '_head.html.erb'
+    dir_name = Rails.root.to_s + '/app/views/' + the_namespace.downcase + '/' + the_controller.downcase
+    FileUtils.mkdir_p dir_name
+
+    File.open(dir_name + '/' + @the_file_name, 'w') { |f|
+        f.write '<div class="page-title">
+	<div class="title_left">
+		<h3><i class="fa fa-product-hunt"></i> ' + the_namespace + '/' + the_controller + '</h3>
+	</div>
+</div>
+
+<div class="clearfix"></div>'
+    end
+end
+
 def create_html_index(the_namespace, the_controller, the_model, the_fields)
 
     @the_file_name = 'index.html.erb'
