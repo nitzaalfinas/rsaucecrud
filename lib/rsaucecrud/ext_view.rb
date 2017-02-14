@@ -240,10 +240,10 @@ def create_html_index(the_namespace, the_controller, the_model, the_fields)
             // ambil semua parameter
             $.each($(\'.td_filter\'), function(a,b) {
 
-                console.log($(this).find('input').val());
-                var ox_field = $(this).find('.td_field_name').html();
-                var ox_value = $(this).find('input').val();
-                var ox_op = $(this).find('.op_info').html();
+                console.log($(this).find(\'input\').val());
+                var ox_field = $(this).find(\'.td_field_name\').html();
+                var ox_value = $(this).find(\'input\').val();
+                var ox_op = $(this).find(\'.op_info\').html();
 
                 if(ox_value != \'\' && ox_op != []) {
                     ox_filter_rules.push({"field":ox_field,"op":ox_op,"value":ox_value});
