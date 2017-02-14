@@ -238,40 +238,22 @@ def create_html_index(the_namespace, the_controller, the_model, the_fields)
 
             var ox_filter_rules = [];
             // ambil semua parameter
-            $.each($('.td_filter'), function(a,b) {
+            $.each($(\'.td_filter\'), function(a,b) {
 
                 console.log($(this).find('input').val());
                 var ox_field = $(this).find('.td_field_name').html();
                 var ox_value = $(this).find('input').val();
                 var ox_op = $(this).find('.op_info').html();
 
-                if(ox_value != '' && ox_op != []) {
+                if(ox_value != \'\' && ox_op != []) {
                     ox_filter_rules.push({"field":ox_field,"op":ox_op,"value":ox_value});
                 }
             });
 
-            window.location.href = '<%= @urlfor %>?page=1&rows=<%= @rows %>&sort=<%= @sort %>&order=<%= @order %>&filter_rules='+JSON.stringify(ox_filter_rules);
+            window.location.href = \'<%= @urlfor %>?page=1&rows=<%= @rows %>&sort=<%= @sort %>&order=<%= @order %>&filter_rules=\'+JSON.stringify(ox_filter_rules);
         }
 
-        function moreDescription(id) {
-            $('#pdom_'+id+' .n-more-btn').attr('style','display: none;');
-            $('#pdom_'+id+' .n-little-btn').removeAttr('style');
-            $('#pdom_'+id+' .n-description_f').removeAttr('style');
-            $('#pdom_'+id+' .n-description_f').attr('style', 'border-bottom: 1px dotted #888; display: block; width: 100%; height: auto');
-
-            location.hash = 'pdom_'+id;
-        }
-
-        function littleDescription(id) {
-            $('#pdom_'+id+' .n-more-btn').attr('style','display: block;');
-            $('#pdom_'+id+' .n-little-btn').attr('style','display: none;');
-            $('#pdom_'+id+' .n-description_f').removeAttr('style');
-            $('#pdom_'+id+' .n-description_f').attr('style', 'height: 150px; border-bottom: 1px dotted #888; overflow: hidden; width: 100%;');
-
-            location.hash = 'pdom_'+id;
-        }
-        </script>
-'
+        </script>'
 
     }
 
