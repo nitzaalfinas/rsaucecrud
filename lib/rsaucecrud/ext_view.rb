@@ -12,7 +12,7 @@ def create_html_view(the_namespace, the_controller, the_model, the_fields)
 
 end #create_html_view
 
-def create_html_head
+def create_html_head(the_namespace, the_controller, the_model, the_fields)
     @the_file_name = '_head.html.erb'
     dir_name = Rails.root.to_s + '/app/views/' + the_namespace.downcase + '/' + the_controller.downcase
     FileUtils.mkdir_p dir_name
