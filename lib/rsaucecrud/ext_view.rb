@@ -1,5 +1,7 @@
 def create_html_view(the_namespace, the_controller, the_model, the_fields)
 
+    create_html_head(the_namespace, the_controller, the_model, the_fields)
+
     create_html_index(the_namespace, the_controller, the_model, the_fields)
 
     create_html_formnew(the_namespace, the_controller, the_model, the_fields)
