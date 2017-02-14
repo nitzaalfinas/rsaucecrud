@@ -81,7 +81,7 @@ def create_html_index(the_namespace, the_controller, the_model, the_fields)
                             <div class="btn-toolbar">
                                 <div class="pull-right">
 
-                                    <a href="<%= url_for({action: "New"}) %>" class="btn btn-default">
+                                    <a href="<%= url_for({action: "new"}) %>" class="btn btn-default">
                                         New
                                     </a>
 
