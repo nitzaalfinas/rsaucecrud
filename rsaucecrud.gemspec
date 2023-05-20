@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.version     = Rsaucecrud::VERSION
   s.authors     = ["Nitza Alfinas"]
   s.email       = ["nitzaalfinas@gmail.com"]
-  s.homepage    = "http://nitzaalfinas"
+  s.homepage    = "https://nitzaalfinas.com"
   s.summary     = "A plugin that is use to create controller, form and display the data"
   s.description = "A plugin that is use to create controller, form and display the data"
   s.license     = "MIT"
