@@ -31,22 +31,22 @@ def create_html_index(the_namespace, the_controller, the_model, the_fields)
 
     # Data
     @datas_td = "<td>
-    <a href=\"<%= url_for({action: 'edit', id: b.id}) %>\" class=\"btn btn-sm btn-primary\">
-      Edit
-    </a>
-    <%= link_to 'Delete', {
-        action: 'delete', id: b.id, 
-        page: @page, rows: @rows, sort: @sort, order: @order, filter_rules: @filter_rules
-      }, {
-        class: 'btn btn-default btn-sm', 
-      data: {method: 'delete', confirm: \"Are you sure?\"}
-    } %>
-  </td>
-  "
+                      <a href=\"<%= url_for({action: 'edit', id: b.id}) %>\" class=\"btn btn-sm btn-primary\">
+                        Edit
+                      </a>
+                      <%= link_to 'Delete', {
+                          action: 'delete', id: b.id, 
+                          page: @page, rows: @rows, sort: @sort, order: @order, filter_rules: @filter_rules
+                        }, {
+                          class: 'btn btn-default btn-sm', 
+                        data: {method: 'delete', confirm: \"Are you sure?\"}
+                      } %>
+                    </td>
+"
     the_fields.each do |dat|
       @datas_td = "#{@datas_td}
-    <td><%= b.#{dat.to_s} %></td>
-    "
+                      <td><%= b.#{dat.to_s} %></td>
+"
     end
 
     File.open(dir_name + '/' + @the_file_name, 'w') { |f|
