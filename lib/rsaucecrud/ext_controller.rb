@@ -25,6 +25,8 @@ def create_controller_all(the_namespace, the_controller, the_model, the_fields)
 
     f.write create_controller_destroy(the_namespace, the_controller, the_model, the_fields)
 
+    f.write create_controller_private(the_namespace, the_controller, the_model, the_fields)
+
     f.write "\n" + 'end'
   end
 
@@ -139,5 +141,14 @@ def create_controller_destroy(the_namespace, the_controller, the_model, the_fiel
     " + the_model + ".find(params[:id]).destroy
     redirect_to action: 'index'
   end
+"
+end
+
+def create_controller_private(the_namespace, the_controller, the_model, the_fields)
+"
+private
+def menu_active
+  @menu_#{the_controller.downcase} = 'active'
+end
 "
 end

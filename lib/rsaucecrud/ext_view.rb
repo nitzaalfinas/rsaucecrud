@@ -10,8 +10,6 @@ def create_html_view(the_namespace, the_controller, the_model, the_fields)
 
 end #create_html_view
 
-
-
 def create_html_index(the_namespace, the_controller, the_model, the_fields)
 
     @the_file_name = 'index.html.erb'
