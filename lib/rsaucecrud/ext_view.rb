@@ -1,32 +1,16 @@
 def create_html_view(the_namespace, the_controller, the_model, the_fields)
 
-    create_html_head(the_namespace, the_controller, the_model, the_fields)
+  create_html_index(the_namespace, the_controller, the_model, the_fields)
 
-    create_html_index(the_namespace, the_controller, the_model, the_fields)
+  create_html_formnew(the_namespace, the_controller, the_model, the_fields)
 
-    create_html_formnew(the_namespace, the_controller, the_model, the_fields)
+  create_html_show(the_namespace, the_controller, the_model, the_fields)
 
-    create_html_show(the_namespace, the_controller, the_model, the_fields)
-
-    create_html_formedit(the_namespace, the_controller, the_model, the_fields)
+  create_html_formedit(the_namespace, the_controller, the_model, the_fields)
 
 end #create_html_view
 
-def create_html_head(the_namespace, the_controller, the_model, the_fields)
-    @the_file_name = '_head.html.erb'
-    dir_name = Rails.root.to_s + '/app/views/' + the_namespace.downcase + '/' + the_controller.downcase
-    FileUtils.mkdir_p dir_name
 
-    File.open(dir_name + '/' + @the_file_name, 'w') { |f|
-        f.write '<div class="page-title">
-	<div class="title_left">
-		<h3><i class="fa fa-product-hunt"></i> ' + the_namespace + '/' + the_controller + '</h3>
-	</div>
-</div>
-
-<div class="clearfix"></div>'
-    }
-end
 
 def create_html_index(the_namespace, the_controller, the_model, the_fields)
 
@@ -44,239 +28,170 @@ def create_html_index(the_namespace, the_controller, the_model, the_fields)
         </tr>' + "\n"
     end
 
-    # Filter
-    @tds = ''
+    # table head column
+    @table_head_th = ''
     the_fields.each do |tdx|
-        @tds = @tds + '    <tr>
-                <td>' + tdx.to_s + '</td>
-                <td class="td_filter">
-                    <%= show_td_filter(\'' + tdx.to_s + '\', [\'equal\', \'not equal\', \'contains\', \'l_contains\', \'less\', \'greater\']).html_safe %>
-                </td>
-            </tr>' + "\n"
+      @table_head_th = "#{@table_head_th}
+        <th scope=\"col\">
+          #{tdx.to_s}
+          <%= advsearch_table_th_nav('#{tdx.to_s}', '#{tdx.to_s}', 'text').html_safe %>
+        </th>"
     end
+    @table_head = "<thead id=\"head_search\"><tr>#{@table_head_th}</tr></thead>"
 
     # Data
-    @datas = ''
+    @datas_td = "<td>
+    <a href=\"<%= url_for({action: 'edit', id: b.id}) %>\" class=\"btn btn-sm btn-primary\">
+      Edit
+    </a>
+    <%= link_to 'Delete', {
+        action: 'delete', id: b.id, 
+        page: @page, rows: @rows, sort: @sort, order: @order, filter_rules: @filter_rules
+      }, {
+        class: 'btn btn-default btn-sm', 
+      data: {method: 'delete', confirm: \"Are you sure?\"}
+    } %>
+  </td>
+  "
     the_fields.each do |dat|
-        @datas = @datas + '<tr>
-                <td>
-                    ' + dat.to_s + '
-                </td>
-                <td>
-                        <%= data.' + dat.to_s + ' %>
-                </td>
-                        </tr>' + "\n"
+      @datas_td = "#{@datas_td}
+    <td><%= b.#{dat.to_s} %></td>
+    "
     end
-
 
     File.open(dir_name + '/' + @the_file_name, 'w') { |f|
 
-        f.write '
-        <%= render partial: "head" %>
+      f.write "
+      <!-- TIPE GRID -->
+      <div class=\"content-wrapper\">
+        <section class=\"content-header\">
+          <h1>
+            #{the_controller}
+          </h1>
+          <%= app_sp_breadcrumb([
+            {icon: 'fa fa-dashboard', text: '', link: '/dashboard/index' },
+            {icon: '', text: '#{the_controller}', link: '#' },
+          ]).html_safe %>
+        </section>
 
-        <div class="row">
-            <div class="col-md-12">
-                <div class="x_panel">
-                    <div class="x_title">
-                        <h2 class="col-md-6">Index</h2>
-                        <div class="col-md-6 pl0 pr0">
-                            <div class="btn-toolbar">
-                                <div class="pull-right">
+        <!-- Main content -->
+        <section class=\"content\">
+          <div class=\"row\">
 
-                                    <a href="<%= url_for({action: "new"}) %>" class="btn btn-default">
-                                        New
-                                    </a>
+            <!-- NAVIGASI HALAMAN -->
+            <div class=\"col-xs-12\" style=\"margin-bottom: 0px;\">
+              <table style=\"float: right\">
+                <tr>
+                  <td style=\"padding: 0 5px;\">
+                    <% if @filter_rules != '[]' %>
+                      <%= link_to 'Reset Pencarian', {action: 'index', page: @page, rows: @rows, sort: @sort, order: @order, filter_rules: \"[]\"}, {class: ''} %>
+                    <% end %>
+                  </td>
 
-                                    <div class="btn btn-default" onclick="$(\'#search_field_wrap\').toggle();">
-                                        <i class="fa fa-search"></i>
-                                    </div>
-
-                                    <!-- Order -->
-                                    <div class="btn-group mr10">
-                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <%= @sort %> <%= @order %>
-                                            <span class="caret"></span>
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                            <li>
-                                                <table class="table table-striped">
-                                                    <thead>
-                                                        ' + @ths + '
-                                                    </thead>
-                                                </table>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <!-- End Order -->
-
-                                    <!-- rows selection -->
-                                    <div class="btn-group mr10">
-                                        <button type="button" class="btn btn-default">Data Per-halaman: <%= @rows %></button>
-                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <span class="caret"></span>
-                                            <span class="sr-only">Toggle Dropdown</span>
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                            <li>
-                                                <a href="<%= @urlfor %>?page=1&rows=5&sort=<%= @sort %>&order=<%= @order %>&filter_rules=<%= @filter_rules %>">
-                                                    5
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="<%= @urlfor %>?page=1&rows=10&sort=<%= @sort %>&order=<%= @order %>&filter_rules=<%= @filter_rules %>">
-                                                    10
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="<%= @urlfor %>?page=1&rows=15&sort=<%= @sort %>&order=<%= @order %>&filter_rules=<%= @filter_rules %>">
-                                                    15
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="<%= @urlfor %>?page=1&rows=20&sort=<%= @sort %>&order=<%= @order %>&filter_rules=<%= @filter_rules %>">
-                                                    20
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="<%= @urlfor %>?page=1&rows=30&sort=<%= @sort %>&order=<%= @order %>&filter_rules=<%= @filter_rules %>">
-                                                    30
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="<%= @urlfor %>?page=1&rows=50&sort=<%= @sort %>&order=<%= @order %>&filter_rules=<%= @filter_rules %>">
-                                                    50
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="<%= @urlfor %>?page=1&rows=100&sort=<%= @sort %>&order=<%= @order %>&filter_rules=<%= @filter_rules %>">
-                                                    100
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <!-- end rows selection -->
-
-                                    <!-- pagination -->
-                                    <div class="btn-group">
-                                        <!-- if (page - 1) = 0, don\'t show this -->
-                                        <% if ((@page.to_i - 1) != 0) %>
-                                        <a href="<%= @urlfor %>?page=<%= @page.to_i - 1 %>&rows=<%= @rows %>&sort=<%= @sort %>&order=<%= @order %>&filter_rules=<%= @filter_rules %>" class="btn btn-default">
-                                            <span>&laquo;</span>
-                                        </a>
-                                        <% end %>
-
-                                        <!-- don\'t show this if it just one page -->
-                                        <% if @total_page.to_i > 1 %>
-                                        <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                                           Halaman <%= @page %> <span class="caret"></span>
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                            <% @ai = 1 %>
-                                            <% while @ai <= @total_page do %>
-                                            <li>
-                                                <a href="<%= @urlfor %>?page=<%= @ai %>&rows=<%= @rows %>&sort=<%= @sort %>&order=<%= @order %>&filter_rules=<%= @filter_rules %>">
-                                                    <%= @ai %>
-                                                </a>
-                                            </li>
-                                            <% @ai += 1 %>
-                                            <% end %>
-                                        </ul>
-                                        <% end %>
-
-                                        <% if ((@page.to_i + 1) < (@total_page + 1)) %>
-                                        <a href="<%= @urlfor %>?page=<%= @page.to_i + 1 %>&rows=<%= @rows %>&sort=<%= @sort %>&order=<%= @order %>&filter_rules=<%= @filter_rules %>" class="btn btn-default">
-                                            <span>&raquo;</span>
-                                        </a>
-                                        <% end %>
-                                    </div>
-                                    <!-- end pagination -->
-                                </div>
-                            </div>
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
-
-                    <div class="x_content">
-
-                        <div id="search_field_wrap" class="col-md-12" style="display: none;">
-                            <table class="table table-striped">
-                                <tbody>
-                                    ' + @tds + '
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <% @datas.each do |data| %>
-
-                        <%# AGAR BISA DIGUNAKAN DIDALAM PARTIAL %>
-                        <% @pdata = data %>
-                        <div id="pdom_<%= data.id %>" class="col-md-12">
-
-                            <div class="col-md-5 col-sm-7 col-xs-12">
-                                <img src="" class="col-md-12" >
-                            </div>
-
-                            <div class="col-md-7 col-sm-5 col-xs-12" style="border:0px solid #e5e5e5;">
-
-                                <table class="table table-striped">
-                                    ' + @datas + '
-                                </table>
-
-                                <div class="clearfix"></div>
-
-                                <div class="btn-toolbar">
-                                    <a href="<%= url_for({ action: \'edit\', id: data.id, page: @page, rows: @rows, sort: @sort, order: @order, filter_rules: @filter_rules}) %>" class="btn btn-default btn-lg">
-                                        <i class="fa fa-pencil"></i> Edit
-                                    </a>
-                                </div>
-
-                            </div>
-
-                        </div>
-                        <div class="col-md-12">
-                            <hr>
-                        </div>
-
+                  <td style=\"padding: 0 5px;\">
+                    <a href=\"<%= url_for(action: 'new') %>\" class=\"btn btn-primary\">Add New</a>
+                  </td>
+                  
+                  <td style=\"padding: 0 5px;\">
+                    <nav aria-label=\"Page navigation\">
+                      <ul class=\"pagination\">
+                        <% if ((@page.to_i - 1) != 0) %>
+                          <li>
+                            <a href=\"<%= @urlfor %>?page=<%= @page.to_i - 1 %>&amp;rows=<%= @rows %>&amp;sort=<%= @sort %>&amp;order=<%= @order %>&amp;filter_rules=<%= @filter_rules %>\">
+                              <span aria-hidden=\"true\">&laquo;</span>
+                            </a>
+                          </li>
                         <% end %>
+                        <% if ((@page.to_i + 1) < (@total_page + 1)) %>
+                          <li>
+                            <a href=\"<%= @urlfor %>?page=<%= @page.to_i + 1 %>&amp;rows=<%= @rows %>&amp;sort=<%= @sort %>&amp;order=<%= @order %>&amp;filter_rules=<%= @filter_rules %>\">
+                              <span aria-hidden=\"true\">&raquo;</span>
+                            </a>
+                          </li>
+                        <% end %>
+                      </ul>
+                    </nav>
+                  </td>
+                  <td style=\"padding: 0 5px;\">
+                    <div class=\"btn-group\">
+                      <button type=\"button\" class=\"btn btn-default dropdown-toggle\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">
+                        Baris:
+                        <%= @rows %>
+                      </button>
+
+                      <ul class=\"dropdown-menu\">
+                        <li>
+                          <a href=\"<%= @urlfor %>?page=1&amp;rows=5&amp;sort=<%= @sort %>&amp;order=<%= @order %>&amp;filter_rules=<%= @filter_rules %>\">
+                            5
+                          </a>
+                        </li>
+                        <li>
+                          <a href=\"<%= @urlfor %>?page=1&amp;rows=10&amp;sort=<%= @sort %>&amp;order=<%= @order %>&amp;filter_rules=<%= @filter_rules %>\">
+                            10
+                          </a>
+                        </li>
+                        <li>
+                          <a href=\"<%= @urlfor %>?page=1&amp;rows=15&amp;sort=<%= @sort %>&amp;order=<%= @order %>&amp;filter_rules=<%= @filter_rules %>\">
+                            15
+                          </a>
+                        </li>
+                        <li>
+                          <a href=\"<%= @urlfor %>?page=1&amp;rows=20&amp;sort=<%= @sort %>&amp;order=<%= @order %>&amp;filter_rules=<%= @filter_rules %>\">
+                            20
+                          </a>
+                        </li>
+                        <li>
+                          <a href=\"<%= @urlfor %>?page=1&amp;rows=30&amp;sort=<%= @sort %>&amp;order=<%= @order %>&amp;filter_rules=<%= @filter_rules %>\">
+                            30
+                          </a>
+                        </li>
+                        <li>
+                          <a href=\"<%= @urlfor %>?page=1&amp;rows=50&amp;sort=<%= @sort %>&amp;order=<%= @order %>&amp;filter_rules=<%= @filter_rules %>\">
+                            50
+                          </a>
+                        </li>
+                      </ul>
                     </div>
-                </div>
+                  </td>
+                </tr>
+              </table>
             </div>
-        </div>
+            <!-- NAVIGASI HALAMAN -->
 
+            <div class=\"col-xs-12\">
+              <div class=\"box\">
+                <!-- /.box-header -->
+                <div class=\"box-body table-responsive\">
 
-        <script type="text/javascript">
-        var filter_rules = <%= @filter_rules.html_safe %>;
+                  <!-- Table grid -->
+                  <table class=\"table table-striped\">
+                    #{@table_head}
+                    <tbody>
+                      <% @datas.each do |b| %>
+                        <tr>
+                          #{@datas_td}
+                        </tr>
+                      <% end %>
+                    </tbody>
+                  </table>
+                  <!--/ Table grid -->
 
-        $.each(filter_rules, function(i, nilai){
-            $(\'#td_filter_\' + nilai.field + \' input\').val(nilai.value);
-            $(\'#td_filter_\' + nilai.field + \' .op_info\').html(nilai.op);
-        });
+                </div>
+              </div>
+            </div>
 
-        function filterRulesChange(field_name, the_op) {
+          </div>
+        </section>
+      </div>
 
-            // sebelum dieksekusi, diganti dulu op_info
-            $(\'#td_filter_\' + field_name + \' .op_info\').html(the_op);
+      <script type=\"text/javascript\">
+      $(document).ready(function () {
+        adding_search_head_value_for_filtering_and_go(`<%= @filter_rules.html_safe %>`);
+      });
+      </script>
+      "
 
-            var ox_filter_rules = [];
-            // ambil semua parameter
-            $.each($(\'.td_filter\'), function(a,b) {
-
-                console.log($(this).find(\'input\').val());
-                var ox_field = $(this).find(\'.td_field_name\').html();
-                var ox_value = $(this).find(\'input\').val();
-                var ox_op = $(this).find(\'.op_info\').html();
-
-                if(ox_value != \'\' && ox_op != []) {
-                    ox_filter_rules.push({"field":ox_field,"op":ox_op,"value":ox_value});
-                }
-            });
-
-            window.location.href = \'<%= @urlfor %>?page=1&rows=<%= @rows %>&sort=<%= @sort %>&order=<%= @order %>&filter_rules=\'+JSON.stringify(ox_filter_rules);
-        }
-
-        </script>'
-
-    }
+  }
 
 end #create_html_index
 
