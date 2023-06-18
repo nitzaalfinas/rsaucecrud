@@ -1,37 +1,42 @@
 def create_controller_all(the_namespace, the_controller, the_model, the_fields)
 
-    @the_file_name = the_controller.downcase + '_controller.rb'
+  @the_file_name = the_controller.downcase + '_controller.rb'
 
-    dir_name = Rails.root.to_s + '/app/controllers/' + the_namespace.downcase
-    FileUtils.mkdir_p dir_name
+  dir_name = Rails.root.to_s + '/app/controllers/' + the_namespace.downcase
+  FileUtils.mkdir_p dir_name
 
-    File.open(dir_name + '/' + @the_file_name, 'w') do |f|
+  File.open(dir_name + '/' + @the_file_name, 'w') do |f|
 
-        f.write 'class ' + the_namespace + '::' + the_controller + 'Controller < ApplicationController'
+    f.write 'class ' + the_namespace + '::' + the_controller + 'Controller < ApplicationController'
 
-        f.write "
+    f.write create_class_method
+
+    f.write create_controller_index(the_namespace, the_controller, the_model, the_fields)
+
+    f.write create_controller_new(the_namespace, the_controller, the_model, the_fields)
+
+    f.write create_controller_create(the_namespace, the_controller, the_model, the_fields)
+
+    f.write create_controller_show(the_namespace, the_controller, the_model, the_fields)
+
+    f.write create_controller_edit(the_namespace, the_controller, the_model, the_fields)
+
+    f.write create_controller_update(the_namespace, the_controller, the_model, the_fields)
+
+    f.write create_controller_destroy(the_namespace, the_controller, the_model, the_fields)
+
+    f.write "\n" + 'end'
+  end
+
+end
+
+def create_class_method
+"
   layout 'sp_lte'
   before_action :login_sp_required
   before_action :menu_active
-  protect_from_forgery only: []"
-
-        f.write create_controller_index(the_namespace, the_controller, the_model, the_fields)
-
-        f.write create_controller_new(the_namespace, the_controller, the_model, the_fields)
-
-        f.write create_controller_create(the_namespace, the_controller, the_model, the_fields)
-
-        f.write create_controller_show(the_namespace, the_controller, the_model, the_fields)
-
-        f.write create_controller_edit(the_namespace, the_controller, the_model, the_fields)
-
-        f.write create_controller_update(the_namespace, the_controller, the_model, the_fields)
-
-        f.write create_controller_destroy(the_namespace, the_controller, the_model, the_fields)
-
-        f.write "\n" + 'end'
-    end
-
+  protect_from_forgery only: []
+"
 end
 
 
@@ -68,22 +73,22 @@ end
 
 def create_controller_create(the_namespace, the_controller, the_model, the_fields)
 
-    @tfs = ''
-    the_fields.each do |tf|
-        if tf.to_s != 'id' && tf.to_s != 'created_at' && tf.to_s != 'updated_at'
-            @tfs = @tfs + ',
-            ' + tf.to_s + ': params[:' + the_model.downcase + '][:' + tf.to_s + ']'
-        end
+  @tfs = ''
+  the_fields.each do |tf|
+    if tf.to_s != 'id' && tf.to_s != 'created_at' && tf.to_s != 'updated_at'
+      @tfs = @tfs + ',
+      ' + tf.to_s + ': params[:' + the_model.downcase + '][:' + tf.to_s + ']'
     end
+  end
 
 "
-    def create
-        @" + the_model.downcase + " = " + the_model + ".create({
-            " + @tfs[1..@tfs.length] + "
-        })
+  def create
+    @" + the_model.downcase + " = " + the_model + ".create({
+      " + @tfs[1..@tfs.length] + "
+    })
 
-        redirect_to action: 'index'
-    end
+    redirect_to action: 'index'
+  end
 "
 end
 
