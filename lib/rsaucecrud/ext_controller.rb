@@ -95,46 +95,49 @@ end
 
 def create_controller_show(the_namespace, the_controller, the_model, the_fields)
 "
-    def show
-        @" + the_model.downcase + " = " + the_model + ".find(params[:id].to_i)
-    end
+  def show
+    @data = #{the_model}.find(params[:id])
+  end
 "
 end
 
 def create_controller_edit(the_namespace, the_controller, the_model, the_fields)
 "
-    def edit
-        @" + the_model.downcase + " = " + the_model + ".find(params[:id].to_i)
-    end
+  def edit
+    @data = #{the_model}.find(params[:id])
+  end
 "
 end
 
 def create_controller_update(the_namespace, the_controller, the_model, the_fields)
 
-    @tfs = ''
-    the_fields.each do |tf|
-        if tf.to_s != 'id' && tf.to_s != 'created_at' && tf.to_s != 'updated_at'
-            @tfs = @tfs + '@' + the_model.downcase + '.' + tf.to_s + ' = params[:' + the_model.downcase + '][:' + tf.to_s + ']
-            '
-        end
+  @tfs = ''
+  the_fields.each do |tf|
+    if tf.to_s != 'id' && tf.to_s != 'created_at' && tf.to_s != 'updated_at'
+      @tfs = "#{@tfs} @data.#{tf.to_s} = dparam[:#{tf.to_s}]
+      "
     end
+  end
 
 "
-    def update
-        @" + the_model.downcase + " = " + the_model + ".find(params[:id].to_i)
-        " + @tfs + "@" + the_model.downcase + ".save
+  def update
+    @id = params[:id]
 
-        redirect_to action: 'index'
-    end
+    dparam = params[:#{the_model.downcase}]
+
+    @data = #{the_model}.find(@id)
+    " + @tfs + "@data.save
+
+    redirect_to action: 'index', page: params[:page], rows: params[:rows], sort: params[:sort], order: params[:order], filter_rules: params[:filter_rules], anchor: \"box_\#{@id}\"
+  end
 "
 end
 
 def create_controller_destroy(the_namespace, the_controller, the_model, the_fields)
 "
-    def destroy
-        " + the_model + ".find(params[:id].to_i).destroy
-
-        redirect_to action: 'index'
-    end
+  def destroy
+    " + the_model + ".find(params[:id]).destroy
+    redirect_to action: 'index'
+  end
 "
 end
