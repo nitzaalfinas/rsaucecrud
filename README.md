@@ -17,7 +17,7 @@ $ rails console
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'rsaucecrud', git: 'git://github.com/nitzaalfinas/rsaucecrud.git'
+gem 'rsaucecrud', git: 'https://github.com/nitzaalfinas/rsaucecrud.git'
 ```
 
 And then execute:
