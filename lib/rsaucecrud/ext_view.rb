@@ -20,10 +20,11 @@ def create_html_index(the_namespace, the_controller, the_model, the_fields)
     @table_head_th = ''
     the_fields.each do |tdx|
       @table_head_th = "#{@table_head_th}
-        <th scope=\"col\">
-          #{tdx.to_s}
-          <%= advsearch_table_th_nav('#{tdx.to_s}', '#{tdx.to_s}', 'text').html_safe %>
-        </th>"
+                    <th scope=\"col\">
+                      #{tdx.to_s}
+                      <%= advsearch_table_th_nav('#{tdx.to_s}', '#{tdx.to_s}', 'text').html_safe %>
+                    </th>
+"
     end
     @table_head = "<thead id=\"head_search\">
     <tr>#{@table_head_th}</tr>
@@ -45,7 +46,9 @@ def create_html_index(the_namespace, the_controller, the_model, the_fields)
 "
     the_fields.each do |dat|
       @datas_td = "#{@datas_td}
-                      <td><%= b.#{dat.to_s} %></td>
+                    <td>
+                      <%= b.#{dat.to_s} %>
+                    </td>
 "
     end
 
