@@ -9,6 +9,12 @@ def create_controller_all(the_namespace, the_controller, the_model, the_fields)
 
         f.write 'class ' + the_namespace + '::' + the_controller + 'Controller < ApplicationController'
 
+        f.write "
+  layout 'sp_lte'
+  before_action :login_sp_required
+  before_action :menu_active
+  protect_from_forgery only: []"
+
         f.write create_controller_index(the_namespace, the_controller, the_model, the_fields)
 
         f.write create_controller_new(the_namespace, the_controller, the_model, the_fields)
