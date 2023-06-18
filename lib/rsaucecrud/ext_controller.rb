@@ -32,28 +32,30 @@ end
 def create_controller_index(the_namespace, the_controller, the_model, the_fields)
 
 "
-  advanced_page_and_filter(#{the_model}.column_names)
+  def index 
+    advanced_page_and_filter(#{the_model}.column_names)
 
-  if @keluaran_length != 0
-    @total_item = #{the_model}.where(@nu_where).size
-    @total_page = (@total_item.to_f / @rows.to_i).ceil
-   @datas = #{the_model}.where(@nu_where).order(@sort + ' ' + @order).limit(@rows).offset(@startx)
-  else
-    @total_item = #{the_model}.all.size
-    @total_page = (@total_item.to_f / @rows.to_i).ceil
-    @datas = #{the_model}.all.order(@sort + ' ' + @order).limit(@rows).offset(@startx)
+    if @keluaran_length != 0
+      @total_item = #{the_model}.where(@nu_where).size
+      @total_page = (@total_item.to_f / @rows.to_i).ceil
+     @datas = #{the_model}.where(@nu_where).order(@sort + ' ' + @order).limit(@rows).offset(@startx)
+    else
+      @total_item = #{the_model}.all.size
+      @total_page = (@total_item.to_f / @rows.to_i).ceil
+      @datas = #{the_model}.all.order(@sort + ' ' + @order).limit(@rows).offset(@startx)
+    end
+
+    @urlfor = url_for(action: 'index')
   end
-
-  @urlfor = url_for(action: 'index')
 "
 end
 
 
 def create_controller_new(the_namespace, the_controller, the_model, the_fields)
 "
-    def new
-        @" + the_model.downcase + " = " + the_model + ".new
-    end
+  def new
+    @#{the_model.downcase} = #{the_model}.new
+  end
 "
 end
 
