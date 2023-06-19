@@ -7,7 +7,13 @@ def create_controller_all(the_namespace, the_controller, the_model, the_fields)
 
   File.open(dir_name + '/' + @the_file_name, 'w') do |f|
 
-    f.write 'class ' + the_namespace + '::' + the_controller + 'Controller < ApplicationController'
+    if the_namespace != ''
+      @write_namespace  = "#{the_namespace}::"
+    else  
+      @write_namespace  = ""
+    end
+
+    f.write "class #{@write_namespace}#{the_controller}Controller < ApplicationController"
 
     f.write create_class_method
 
