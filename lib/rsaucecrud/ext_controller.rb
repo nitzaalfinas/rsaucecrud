@@ -67,7 +67,7 @@ end
 def create_controller_new(the_namespace, the_controller, the_model, the_fields)
 "
   def new
-    @#{the_model.downcase} = #{the_model}.new
+    @data = #{the_model}.new
   end
 "
 end
@@ -85,7 +85,7 @@ def create_controller_create(the_namespace, the_controller, the_model, the_field
 
 "
   def create
-    @" + the_model.downcase + " = " + the_model + ".create({
+    @data = " + the_model + ".create({
       " + @tfs[1..@tfs.length] + "
     })
 
