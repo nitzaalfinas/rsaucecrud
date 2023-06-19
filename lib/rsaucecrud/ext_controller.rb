@@ -23,7 +23,7 @@ def create_controller_all(the_namespace, the_controller, the_model, the_fields)
 
     f.write create_controller_update(the_namespace, the_controller, the_model, the_fields)
 
-    f.write create_controller_destroy(the_namespace, the_controller, the_model, the_fields)
+    f.write create_controller_delete(the_namespace, the_controller, the_model, the_fields)
 
     f.write create_controller_private(the_namespace, the_controller, the_model, the_fields)
 
@@ -135,11 +135,21 @@ def create_controller_update(the_namespace, the_controller, the_model, the_field
 "
 end
 
-def create_controller_destroy(the_namespace, the_controller, the_model, the_fields)
+def create_controller_delete(the_namespace, the_controller, the_model, the_fields)
 "
-  def destroy
-    " + the_model + ".find(params[:id]).destroy
-    redirect_to action: 'index'
+  def delete
+    @id = params[:id]
+
+    @data = #{the_model}.find(@id)
+
+    if @data == nil
+      flash[:notif] = 'Fail'
+      redirect_to action: 'index'
+    else
+      @data.destroy
+      flash[:notif] = 'Deleted'
+      redirect_to action: 'index'
+    end
   end
 "
 end
