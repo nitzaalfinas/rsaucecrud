@@ -279,45 +279,48 @@ def create_html_formedit(the_namespace, the_controller, the_model, the_fields)
 
     File.open(dir_name + '/' + @the_file_name, 'w') { |f|
 
-        f.write '<%= render partial: "head" %>' + "\n"
-
-        f.write '<div class="row">' + "\n"
-        f.write '    <div class="col-md-12">' + "\n"
-        f.write '        <div class="x_panel">' + "\n"
-        f.write '            <div class="x_title">' + "\n"
-        f.write '                <h2>Edit</h2>' + "\n"
-        f.write '            </div>' + "\n"
-        f.write '            <div class="x_content">' + "\n"
-
-        f.write '                <div class="form-horizontal">' + "\n"
-        f.write '                    <%= form_for @' + the_model.downcase + ', url: {controller: "/' + the_namespace.downcase + '/' + the_controller.downcase + '", action: "update", id: @' + the_model.downcase + '.id} do |f| %>' + "\n"
-
-        the_fields.each do |col|
-            if col.to_s != 'id' && col.to_s != 'created_at' && col.to_s != 'updated_at'
-                f.write '                        <div class="form-group">' + "\n"
-                f.write '                            <label class="col-md-4 control-label">' + col.to_s + '</label>' + "\n"
-                f.write '                            <div class="col-md-8">' + "\n"
-                f.write '                                <%= f.text_field :' + col.to_s + ', {class: "form-control"} %>' + "\n"
-                f.write '                            </div>' + "\n"
-                f.write '                        </div>' + "\n"
-            end
+      f.write "<div class=\"content-wrapper\">\n"
+      f.write "  <section class=\"content-header\">\n"
+      f.write "    <h1>\n"
+      f.write "      #{the_controller}\n"
+      f.write "    </h1>\n"
+      f.write "    <%= app_sp_breadcrumb([\n"
+      f.write "      {icon: 'fa fa-dashboard', text: '', link: '/dashboard/index' },\n"
+      f.write "      {icon: '', text: '#{the_controller}', link: '/#{the_controller.downcase}' },\n"
+      f.write "      {icon: '', text: 'Edit', link: '#' },\n"
+      f.write "    ]).html_safe %>\n"
+      f.write "  </section>\n"
+      f.write "  <!-- Main content -->\n"
+      f.write "  <section class=\"content\">\n"
+      f.write "    <div class=\"row\">\n"
+      f.write "      <div class=\"col-xs-12\">\n"
+      f.write "        <div class=\"box\">\n"
+      f.write "          <div class=\"box-header with-border\">\n"
+      f.write "            <h3 class=\"box-title\">Edit</h3>\n"
+      f.write "          </div>\n"
+      f.write "          <!-- /.box-header -->\n"
+      f.write "          <div class=\"box-body table-responsive\">\n"
+      f.write "            <%= form_for(@data, url: url_for(action: 'update', id: @data.id)) do |f| %>\n"
+      
+      the_fields.each do |col|
+        if col.to_s != 'id' && col.to_s != 'created_at' && col.to_s != 'updated_at'
+          f.write "              <div class=\"form-group\">\n"
+          f.write "                <label>#{col.to_s}</label>\n"
+          f.write "                <%= f.text_field :#{col.to_s}, {class: 'form-control'} %>\n"
+          f.write "              </div>\n"
         end
-
-        f.write '                        <div class="form-group">' + "\n"
-        f.write '                            <label class="col-md-4 control-label">&nbsp;</label>' + "\n"
-        f.write '                            <div class="col-md-8">' + "\n"
-        f.write '                                <button class="btn btn-primary"><i class="fa fa-save"></i> Simpan</button>' + "\n"
-        f.write '                                <%= link_to \'<i class="fa fa-undo"></i> Batal\'.html_safe, {controller: "/' + the_namespace.downcase + '/' + the_controller.downcase + '", action: "index"}, {class: \'btn btn-default\'} %>' + "\n"
-        f.write '                            </div>' + "\n"
-        f.write '                        </div>' + "\n"
-        f.write '                    <% end %>' + "\n"
-        f.write '                </div>' + "\n"
-
-
-        f.write '            </div>' + "\n"
-        f.write '        </div>' + "\n"
-        f.write '    </div>' + "\n"
-        f.write '</div>' + "\n"
-
+      end
+      
+      f.write "              <div class=\"form-group\">\n"
+      f.write "                <%= f.submit 'Simpan', {class: 'btn btn-primary'} %>\n"
+      f.write "                <a href=\"<%= url_for(action: 'index', page: params[:page], rows: params[:rows], sort: params[:sort], order: params[:order], filter_rules: params[:filter_rules]) %>\" class=\"btn btn-default\">Batal</a>\n"
+      f.write "              </div>\n"
+      f.write "            <% end %>\n"
+      f.write "          </div>\n"
+      f.write "        </div>\n"
+      f.write "      </div>\n"
+      f.write "    </div>\n"
+      f.write "  </section>\n"
+      f.write "</div>\n"
     }
 end #create_html_formedit

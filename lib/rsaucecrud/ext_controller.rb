@@ -156,9 +156,9 @@ end
 
 def create_controller_private(the_namespace, the_controller, the_model, the_fields)
 "
-private
-def menu_active
-  @menu_#{the_controller.downcase} = 'active'
-end
+  private
+  def menu_active
+    @menu_#{the_controller.downcase} = 'active'
+  end
 "
 end
