@@ -4,8 +4,6 @@ def create_html_view(the_namespace, the_controller, the_model, the_fields)
 
   create_html_formnew(the_namespace, the_controller, the_model, the_fields)
 
-  create_html_show(the_namespace, the_controller, the_model, the_fields)
-
   create_html_formedit(the_namespace, the_controller, the_model, the_fields)
 
 end #create_html_view
@@ -243,32 +241,6 @@ def create_html_formnew(the_namespace, the_controller, the_model, the_fields)
         f.write "</div>\n"
     }
 end #create_html_formnew
-
-
-def create_html_show(the_namespace, the_controller, the_model, the_fields)
-
-    @the_file_name = 'show.html.erb'
-    dir_name = Rails.root.to_s + '/app/views/' + the_namespace.downcase + '/' + the_controller.downcase
-    FileUtils.mkdir_p dir_name
-
-    @tfs = ''
-    the_fields.each do |tf|
-        @tfs = @tfs + '<div class="col-md-24">
-    <div class="col-md-6">
-        ' + tf.to_s + '
-    </div>
-    <div class="col-md-18">
-        <%= @' + the_model.downcase + '.' + tf.to_s + ' %>
-    </div>
-</div>
-'
-    end
-
-    File.open(dir_name + '/' + @the_file_name, 'w') { |f|
-        f.write @tfs
-    }
-
-end #create_html_show
 
 
 def create_html_formedit(the_namespace, the_controller, the_model, the_fields)

@@ -17,8 +17,6 @@ def create_controller_all(the_namespace, the_controller, the_model, the_fields)
 
     f.write create_controller_create(the_namespace, the_controller, the_model, the_fields)
 
-    f.write create_controller_show(the_namespace, the_controller, the_model, the_fields)
-
     f.write create_controller_edit(the_namespace, the_controller, the_model, the_fields)
 
     f.write create_controller_update(the_namespace, the_controller, the_model, the_fields)
@@ -90,15 +88,6 @@ def create_controller_create(the_namespace, the_controller, the_model, the_field
     })
 
     redirect_to action: 'index'
-  end
-"
-end
-
-
-def create_controller_show(the_namespace, the_controller, the_model, the_fields)
-"
-  def show
-    @data = #{the_model}.find(params[:id])
   end
 "
 end
