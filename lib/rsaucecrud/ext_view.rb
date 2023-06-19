@@ -20,7 +20,6 @@ def create_html_index(the_namespace, the_controller, the_model, the_fields)
     the_fields.each do |tdx|
       @table_head_th = "#{@table_head_th}
                   <th scope=\"col\">
-                    #{tdx.to_s}
                     <%= advsearch_table_th_nav('#{tdx.to_s}', '#{tdx.to_s}', 'text').html_safe %>
                   </th>"
     end
