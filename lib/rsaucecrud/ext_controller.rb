@@ -55,7 +55,7 @@ def create_controller_index(the_namespace, the_controller, the_model, the_fields
     if @keluaran_length != 0
       @total_item = #{the_model}.where(@nu_where).size
       @total_page = (@total_item.to_f / @rows.to_i).ceil
-     @datas = #{the_model}.where(@nu_where).order(@sort + ' ' + @order).limit(@rows).offset(@startx)
+      @datas = #{the_model}.where(@nu_where).order(@sort + ' ' + @order).limit(@rows).offset(@startx)
     else
       @total_item = #{the_model}.all.size
       @total_page = (@total_item.to_f / @rows.to_i).ceil
@@ -139,12 +139,12 @@ def create_controller_delete(the_namespace, the_controller, the_model, the_field
 
     if @data == nil
       flash[:notif] = 'Fail'
-      redirect_to action: 'index'
     else
       @data.destroy
       flash[:notif] = 'Deleted'
-      redirect_to action: 'index'
     end
+
+    redirect_to action: 'index', page: params[:page], rows: params[:rows], sort: params[:sort], order: params[:order], filter_rules: params[:filter_rules], anchor: \"box_#{@id}\"
   end
 "
 end
