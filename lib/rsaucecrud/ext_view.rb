@@ -271,7 +271,7 @@ def create_html_formedit(the_namespace, the_controller, the_model, the_fields)
       f.write "          </div>\n"
       f.write "          <!-- /.box-header -->\n"
       f.write "          <div class=\"box-body table-responsive\">\n"
-      f.write "            <%= form_for(@data, url: url_for(action: 'update', id: @data.id)) do |f| %>\n"
+      f.write "            <%= form_for(@data, url: url_for(action: 'update', id: @data.id, page: params[:page], rows: params[:rows], sort: params[:sort], order: params[:order], filter_rules: params[:filter_rules])) do |f| %>\n"
       
       the_fields.each do |col|
         if col.to_s != 'id' && col.to_s != 'created_at' && col.to_s != 'updated_at'
